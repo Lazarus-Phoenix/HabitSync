@@ -5,7 +5,7 @@ from django.db import models
 # from lms.models import Course, Lesson
 
 
-class CustomUser(AbstractUser):
+class User(AbstractUser):
     username = None
     email = models.EmailField(
         unique=True, verbose_name="почта", help_text="Укажите свой email"
@@ -24,13 +24,27 @@ class CustomUser(AbstractUser):
         verbose_name="Телефон",
         help_text="Укажите номер телефона",
     )
-    city = models.CharField(
-        max_length=100,
+    tg_nick = models.CharField(
+        max_length=50,
         blank=True,
         null=True,
-        verbose_name="Город",
-        help_text="Укажите ваш город",
+        verbose_name="ТГ-ник",
+        help_text="Укажите телеграмм-ник"
     )
+    tg_chat_id = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True,
+        verbose_name="Телеграмм chat-id",
+        help_text="Укажите телеграмм chat-id"
+    )
+    # city = models.CharField(
+    #     max_length=100,
+    #     blank=True,
+    #     null=True,
+    #     verbose_name="Город",
+    #     help_text="Укажите ваш город",
+    # )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
