@@ -3,7 +3,7 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from django.contrib import admin
-from django.urls import path
+
 
 """
 Вы сможете увидеть документацию API, перейдя по URL-адресу 
@@ -17,7 +17,7 @@ schema_view = get_schema_view(
     openapi.Info(
         title="API Documentation app HabitSync",
         default_version='v1',
-        description="API трекер привычек с синхронизацией в телегу",
+        description="API трекер привычек с синхронизацией в телеграм",
         terms_of_service="https://www.example.com/policies/terms/",
         contact=openapi.Contact(email="contact@example.com"),
         license=openapi.License(name="BSD License"),
@@ -27,11 +27,15 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    # Другие URL-шаблоны вашего проекта...
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-]
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
+    path(r"admin/", admin.site.urls),
+    path(r"habits/", include("habits.urls", namespace="habits")),
+    path(r"users/", include("users.urls", namespace="users")),
+    path(
+        'swagger/', schema_view.with_ui('swagger', cache_timeout=0),
+        name='schema-swagger-ui'
+    ),
+    path(
+        'redoc/', schema_view.with_ui('redoc', cache_timeout=0),
+        name='schema-redoc'
+    ),
 ]
