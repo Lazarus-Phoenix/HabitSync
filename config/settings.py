@@ -44,8 +44,8 @@ INSTALLED_APPS = [
     'corsheaders',  # CORS заголовки
     'PIL', # pillow менеджер изображений в проекте
     "django_filters",
-    "drf_yasg",
-    "django_celery_beat",
+    "drf_yasg", # Автосборка документации
+    "django_celery_beat", # Асинхронное выполнение задач
 ]
 
 MIDDLEWARE = [
@@ -193,10 +193,6 @@ CELERY_TIMEZONE = TIME_ZONE
 
 # Флаг отслеживания выполнения задач
 CELERY_TASK_TRACK_STARTED = True
-
-# CELERY_ACCEPT_CONTENT = ['json']
-# CELERY_TASK_SERIALIZER = 'json'
-# CELERY_RESULT_SERIALIZER = 'json'
 
 # Максимальное время на выполнение задачи
 CELERY_TASK_TIME_LIMIT = 30 * 60

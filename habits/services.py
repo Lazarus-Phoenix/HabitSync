@@ -6,7 +6,7 @@ from habits.models import Habit
 
 
 def send_tg_message(message, chat_id):
-    """Функция отправки сообщения в Телерамм"""
+    """Функция отправки сообщения в телеграм """
     params = {
         "text": message,
         "chat_id": chat_id,
@@ -15,7 +15,7 @@ def send_tg_message(message, chat_id):
 
 
 def message_generator(user):
-    """Функция генерирует сообщения пользователю с напоминаниями о прифычках."""
+    """Функция генерирует сообщения пользователю с напоминаниями о привычках."""
     current_time = timezone.now().time()
 
     habits = Habit.objects.filter(user=user, time__gte=current_time)
