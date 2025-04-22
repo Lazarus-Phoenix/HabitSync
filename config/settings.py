@@ -45,11 +45,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users',  # ваше приложение users
+    'users',
+    'habits',
     'rest_framework',  # базовый REST framework
     'rest_framework_simplejwt',  # JWT аутентификация
     'corsheaders',  # CORS заголовки
-    'PIL',
+    'PIL', # pillow менеджер изображений в проекте
 
 ]
 
@@ -89,14 +90,6 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'NAME': 'skypro',
-    #     'USER': 'skypro',
-    #     'PASSWORD': 'skypro',
-    #     'HOST': 'localhost',
-    #     'PORT': '5432',
-    # }
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.getenv('NAME'),
