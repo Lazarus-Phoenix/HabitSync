@@ -21,7 +21,9 @@ dependencies = [
     "django-filter (>=25.1,<26.0)",
     "django-celery-beat (>=2.8.0,<3.0.0) ; python_version >= \"3.12\" and python_version < \"4.0\"",
     "ipython (>=9.1.0,<10.0.0)",
-    "redis (>=5.2.1,<6.0.0)"
+    "redis (>=5.2.1,<6.0.0)",
+    "eventlet (>=0.39.1,<0.40.0)",
+    "python-dotenv (>=1.1.0,<2.0.0)"
 ]
 
 
