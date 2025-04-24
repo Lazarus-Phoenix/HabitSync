@@ -48,8 +48,8 @@ class User(AbstractUser):
         max_length=50,
         blank=True,
         null=True,
-        verbose_name="Телеграмм chat-id",
-        help_text="Укажите телеграмм chat-id"
+        verbose_name="Телеграмм юзер chat-id",
+        help_text="Укажите телеграмм юзер chat-id"
     )
 
     USERNAME_FIELD = "email"
