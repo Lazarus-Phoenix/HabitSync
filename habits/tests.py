@@ -1,3 +1,141 @@
+from django.test import TestCase
+from django.core.exceptions import ValidationError
+from habits.models import Habit
+from users.models import User
+
+class HabitModelTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create(username="testuser", email="test@test.com")
+        self.related_habit = Habit.objects.create(
+            user=self.user,
+            place="Home",
+            action="Meditate",
+            time_required=10,
+            is_pleasant=True
+        )
+
+    def test_habit_creation(self):
+        habit = Habit.objects.create(
+            user=self.user,
+            place="Park",
+            action="Running",
+            time_required=30,
+            periodicity=7,
+            reward="Coffee"
+        )
+        self.assertEqual(habit.__str__(), "Running at Park")
+
+    def test_invalid_time_required(self):
+        with self.assertRaises(ValidationError):
+            habit = Habit(
+                user=self.user,
+                action="Invalid Habit",
+                time_required=500  # >120 секунд
+            )
+            habit.full_clean()  # Вызовет ValidationError
+
+    def test_related_habit_and_reward_conflict(self):
+        habit = Habit(
+            user=self.user,
+            action="Test",
+            related_habit=self.related_habit,
+            reward="Chocolate",
+            time_required=15
+        )
+        with self.assertRaises(ValidationError):
+            habit.full_clean()
+
+from rest_framework.test import APITestCase
+from rest_framework import status
+from habits.models import Habit
+from users.models import User
+
+class HabitAPITest(APITestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="12345")
+        self.client.force_authenticate(user=self.user)
+        self.habit = Habit.objects.create(
+            user=self.user,
+            place="Home",
+            action="Reading",
+            time_required=20
+        )
+
+    def test_create_habit(self):
+        response = self.client.post(
+            "/api/habits/",
+            {
+                "place": "Office",
+                "action": "Drink water",
+                "time_required": 5,
+                "periodicity": 1
+            },)
+
+# habits/tests/test_models.py
+from django.test import TestCase
+from habits.models import Habit
+from users.models import User
+
+class HabitModelTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create(username="testuser")
+        self.habit = Habit.objects.create(
+            user=self.user,
+            place="Home",
+            action="Read",
+            time_required=15,
+            is_pleasant=False
+        )
+
+    def test_habit_creation(self):
+        self.assertEqual(self.habit.action, "Read")
+        self.assertEqual(self.habit.time_required, 15)
+
+    def test_invalid_time_required(self):
+        habit = Habit(
+            user=self.user,
+            action="Invalid",
+            time_required=500  # >120 секунд
+        )
+        with self.assertRaises(ValidationError):
+            habit.full_clean()
+
+# habits/tests/test_views.py
+from rest_framework.test import APITestCase
+from habits.models import Habit
+
+class HabitAPITest(APITestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="123")
+        self.client.force_authenticate(user=self.user)
+
+    def test_create_habit(self):
+        response = self.client.post(
+            "/api/habits/",
+            {"action": "Run", "time_required": 30},
+            format="json"
+        )
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(Habit.objects.count(), 1)
+
+    def test_public_habits_list(self):
+        Habit.objects.create(action="Public", is_public=True, user=self.user)
+        response = self.client.get("/api/habits/public/")
+        self.assertEqual(len(response.data), 1)
+
+
+# habits/tests/test_validators.py
+from django.core.exceptions import ValidationError
+from habits.validators import validate_duration
+
+class ValidatorsTest(TestCase):
+    def test_valid_time(self):
+        validate_duration(120)  # Не должно вызывать ошибку
+
+    def test_invalid_time(self):
+        with self.assertRaises(ValidationError):
+            validate_duration(121)
+
 from unittest import TestCase
 from unittest.mock import patch
 
