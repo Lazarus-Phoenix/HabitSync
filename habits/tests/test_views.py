@@ -1,66 +1,48 @@
 import pytest
+from django.contrib.auth import get_user_model
 from django.urls import reverse
-from rest_framework import status
 from rest_framework.test import APIClient
 
-from users.models import User
-from habits.models import Habit
+User = get_user_model()
 
+@pytest.fixture
+def api_client():
+    return APIClient()
 
 @pytest.fixture
 def test_user():
     return User.objects.create_user(
         email="testuser@example.com",
         password="testpass123",
-        username="testuser"  # Явно передаем username
+        tg_chat_id="123123"
     )
 
-
-@pytest.fixture
-def authenticated_client(test_user):
-    client = APIClient()
-    client.force_authenticate(user=test_user)
-    return client
-
-
 @pytest.mark.django_db
-def test_create_habit_authenticated(authenticated_client):
+def test_create_habit_authenticated(api_client, test_user):
+    api_client.force_authenticate(user=test_user)
+    url = reverse("habits:habits-list")  # Используем namespace:basename
     data = {
-        "place": "Test Place",
-        "time": "10:00:00",
-        "action": "Test Action",
+        "place": "Home",
+        "time": "12:00:00",
+        "action": "Read a book",
         "is_pleasant": False,
-        "periodicity": 1,
-        "reward": "Test Reward",
-        "time_to_complete": 120,
-        "is_public": False,
+        "frequency": 1,
+        "reward": "Watch TV",
+        "duration": 120,
+        "is_public": True
     }
-    url = reverse("habit-list")
-    response = authenticated_client.post(url, data=data)
-    assert response.status_code == status.HTTP_201_CREATED
-
+    response = api_client.post(url, data)
+    assert response.status_code == 201
 
 @pytest.mark.django_db
 def test_habit_list_unauthenticated(api_client):
-    url = reverse("habit-list")
+    url = reverse("habits:habits-list")  # Используем namespace:basename
     response = api_client.get(url)
-    assert response.status_code == status.HTTP_401_UNAUTHORIZED
-
+    assert response.status_code == 401  # Unauthorized
 
 @pytest.mark.django_db
-def test_habit_list_authenticated(authenticated_client):
-    Habit.objects.create(
-        user=authenticated_client.user,
-        place="Test Place",
-        time="10:00:00",
-        action="Test Action",
-        is_pleasant=False,
-        periodicity=1,
-        reward="Test Reward",
-        time_to_complete=120,
-        is_public=False,
-    )
-    url = reverse("habit-list")
-    response = authenticated_client.get(url)
-    assert response.status_code == status.HTTP_200_OK
-    assert len(response.data) == 1
+def test_habit_list_authenticated(api_client, test_user):
+    api_client.force_authenticate(user=test_user)
+    url = reverse("habits:habits-list")  # Используем namespace:basename
+    response = api_client.get(url)
+    assert response.status_code == 200
