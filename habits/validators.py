@@ -1,14 +1,11 @@
 from django.core.exceptions import ValidationError
 
 
-
 def validate_reward_and_related_habit(habit):
     """Исключить одновременный выбор связанной привычки и указания вознаграждения."""
     if habit.reward and habit.related_habit:
         raise ValidationError(
-
-                "Заполните только одно из двух полей: 'Награда' или 'Связанная привычка'."
-
+            "Заполните только одно из двух полей: 'Награда' или 'Связанная привычка'."
         )
 
 
@@ -36,10 +33,8 @@ def validate_pleasant_habit(habit):
     """У приятной привычки не может быть вознаграждения или связанной привычки."""
     if habit.pleasant_habit and (habit.reward or habit.related_habit):
         raise ValidationError(
-
-                "У приятной привычки не может быть вознаграждения или связанной привычки."
-            )
-
+            "У приятной привычки не может быть вознаграждения или связанной привычки."
+        )
 
 
 def validate_periodicity(habit):
