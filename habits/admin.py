@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from habits.models import Habit
 
 
@@ -36,11 +37,11 @@ class HabitAdmin(admin.ModelAdmin):
 
     # Добавляем обработку ошибок при отображении связанных полей
     def pleasant_habit(self, obj):
-        return getattr(obj.pleasant_habit, 'action', '-') if obj.pleasant_habit else '-'
+        return getattr(obj.pleasant_habit, "action", "-") if obj.pleasant_habit else "-"
 
     def related_habit(self, obj):
-        return getattr(obj.related_habit, 'action', '-') if obj.related_habit else '-'
+        return getattr(obj.related_habit, "action", "-") if obj.related_habit else "-"
 
     # Добавляем короткие описания для админки
-    pleasant_habit.short_description = 'Положительная привычка'
-    related_habit.short_description = 'Связанная привычка'
+    pleasant_habit.short_description = "Положительная привычка"
+    related_habit.short_description = "Связанная привычка"

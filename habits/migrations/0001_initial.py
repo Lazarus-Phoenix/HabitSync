@@ -15,23 +15,102 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Habit',
+            name="Habit",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('action', models.CharField(help_text='Укажите действие', max_length=255, verbose_name='Действие')),
-                ('time', models.TimeField(help_text='Укажите время', verbose_name='Время')),
-                ('place', models.CharField(help_text='Укажите место', max_length=255, verbose_name='Место')),
-                ('reward', models.CharField(blank=True, help_text='Укажите вознаграждение', max_length=255, null=True, verbose_name='Награда')),
-                ('pleasant_habit', models.BooleanField(default=False, help_text='Признак приятной привычки', verbose_name='Приятная привычка')),
-                ('periodicity', models.PositiveIntegerField(default=1, help_text='Укажите период повторения', verbose_name='Периодичность')),
-                ('duration', models.PositiveIntegerField(help_text='Укажите продолжительность', verbose_name='Продолжительность')),
-                ('is_public', models.BooleanField(default=False, help_text='Признак публичности', verbose_name='Публичность')),
-                ('related_habit', models.ForeignKey(blank=True, help_text='Укажите связанную привычку', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='related_habits', to='habits.habit', verbose_name='Связанная привычка')),
-                ('user', models.ForeignKey(help_text='Укажите создателя привычки', on_delete=django.db.models.deletion.CASCADE, related_name='user', to=settings.AUTH_USER_MODEL, verbose_name='Создатель')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "action",
+                    models.CharField(
+                        help_text="Укажите действие",
+                        max_length=255,
+                        verbose_name="Действие",
+                    ),
+                ),
+                (
+                    "time",
+                    models.TimeField(help_text="Укажите время", verbose_name="Время"),
+                ),
+                (
+                    "place",
+                    models.CharField(
+                        help_text="Укажите место", max_length=255, verbose_name="Место"
+                    ),
+                ),
+                (
+                    "reward",
+                    models.CharField(
+                        blank=True,
+                        help_text="Укажите вознаграждение",
+                        max_length=255,
+                        null=True,
+                        verbose_name="Награда",
+                    ),
+                ),
+                (
+                    "pleasant_habit",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Признак приятной привычки",
+                        verbose_name="Приятная привычка",
+                    ),
+                ),
+                (
+                    "periodicity",
+                    models.PositiveIntegerField(
+                        default=1,
+                        help_text="Укажите период повторения",
+                        verbose_name="Периодичность",
+                    ),
+                ),
+                (
+                    "duration",
+                    models.PositiveIntegerField(
+                        help_text="Укажите продолжительность",
+                        verbose_name="Продолжительность",
+                    ),
+                ),
+                (
+                    "is_public",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Признак публичности",
+                        verbose_name="Публичность",
+                    ),
+                ),
+                (
+                    "related_habit",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="Укажите связанную привычку",
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="related_habits",
+                        to="habits.habit",
+                        verbose_name="Связанная привычка",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        help_text="Укажите создателя привычки",
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="user",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="Создатель",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Привычка',
-                'verbose_name_plural': 'Привычки',
+                "verbose_name": "Привычка",
+                "verbose_name_plural": "Привычки",
             },
         ),
     ]

@@ -1,10 +1,9 @@
 from django.db import models
-from habits.validators import (
-    validate_duration, validate_habit_execution,
-    validate_periodicity, validate_pleasant_habit,
-    validate_related_habit_pleasant,
-    validate_reward_and_related_habit
-)
+
+from habits.validators import (validate_duration, validate_habit_execution,
+                               validate_periodicity, validate_pleasant_habit,
+                               validate_related_habit_pleasant,
+                               validate_reward_and_related_habit)
 from users.models import User
 
 
@@ -25,10 +24,10 @@ class Habit(models.Model):
     )
     reward = models.CharField(
         max_length=255,
-        blank= True,
-        null= True,
+        blank=True,
+        null=True,
         verbose_name="Награда",
-        help_text="Укажите вознаграждение"
+        help_text="Укажите вознаграждение",
     )
     pleasant_habit = models.BooleanField(
         default=False,
@@ -38,11 +37,11 @@ class Habit(models.Model):
     related_habit = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,
-        blank= True,
-        null= True,
+        blank=True,
+        null=True,
         related_name="related_habits",
         verbose_name="Связанная привычка",
-        help_text="Укажите связанную привычку"
+        help_text="Укажите связанную привычку",
     )
     periodicity = models.PositiveIntegerField(
         default=1, verbose_name="Периодичность", help_text="Укажите период повторения"
